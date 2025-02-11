@@ -1,20 +1,11 @@
-## Create C Project
-=======================================
-           _____ _____ _____  
-          / ____/ ____|  __ \ 
-         | |   | |    | |__) |
-         | |   | |    |  ___/ 
-         | |___| |____| |     
-          \_____\_____|_|     
-=======================================                      
+# Create C Project                   
                       
-
 ## Overview
 CCP is a batch script that creates a C/C++ project structure
 
 ## Project structure
 
-# C project
+### C project
 ```
 Project_Name
 ├───bin
@@ -29,7 +20,7 @@ Project_Name
             main.c
 ```
 
-# C++ project
+### C++ project
   ```
 Project_Name
 ├───bin
