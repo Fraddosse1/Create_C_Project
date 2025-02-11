@@ -3,7 +3,14 @@
 
 @echo off
 
-echo WELCOME TO CPP !
+echo =======================================
+echo           _____ _____ _____  
+echo          ^/ ____^/ ____^|  __ ^\ 
+echo         ^| ^|   ^| ^|    ^| ^|__^) ^|
+echo         ^| ^|   ^| ^|    ^|  ___^/ 
+echo         ^| ^|___^| ^|____^| ^|     
+echo          ^\_____^\_____^|_^|                                   
+echo =======================================                  
 echo.
 
 :: Input type of project (c/cpp)
@@ -36,6 +43,7 @@ if "%path%" == "" (
 )
 
 :: Début de création
+echo.
 echo DEBUT DE CREATION
 
 :: Redirection vers le path indiqué

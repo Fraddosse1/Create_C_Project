@@ -1,5 +1,5 @@
 #ifndef __FUNCTIONS__ 
-#define __FUNCTIOND__ 
+#define __FUNCTIONS__ 
  
 // Header content 
  
