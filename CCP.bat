@@ -6,7 +6,7 @@
 echo =======================================
 echo           _____ _____ _____
 echo          ^/ ____^/ ____^|  __ ^\ 
-echo         ^| ^|   ^| ^|    ^| ^|__^)^|
+echo         ^| ^|   ^| ^|    ^| ^|__^) ^|
 echo         ^| ^|   ^| ^|    ^|  ___^/ 
 echo         ^| ^|___^| ^|____^| ^|     
 echo          ^\_____^\_____^|_^|                          
@@ -17,9 +17,16 @@ echo.
 :NameProject
 echo.
 set /p Name=^> Enter the name of the project : 
-set /p Verification=^> Are you sure ? ^(Y/N^) : 
 
-if /i "%Verification%"=="n" goto NameProject
+:VerificationName
+set /p Verification=^> Are you sure ? ^(Y/N^) : 
+if /i "%Verification%" NEQ "y" (
+    if /i "%Verification%" NEQ "n" (
+        goto VerificationName 
+    ) else (
+        goto NameProject
+    )
+)
 
 :: Input type of project (c/cpp)
 :InputType
@@ -28,40 +35,54 @@ set /p type=^> Enter the type of project (c/cpp) :
 
 if /i "%type%" NEQ "c" if /i "%type%" NEQ "cpp" (
     echo.
-    echo Invalid input. Please enter 'c' or 'cpp'.
+    echo [31m^>^> Error: Invalid input. Please enter 'c' or 'cpp'.[0m
     goto InputType
 )
 
 :: Input the PATH of the project
 :InputPath
 echo.
-set /p path=^> Enter the path of the project : 
+set /p ProjectPath=^> Enter the path of the project : 
 
-if "%path%" == "" (
+if "%ProjectPath%"=="" (
     echo.
-    echo Erreur : Veuillez passer un chemin
-    goto InputPath
+    echo Your current directory has been set as your chosen path.
+    set ProjectPath=%cd%
 ) else (
     :: Vérification si il s'agit d'un PATH valide
-    if NOT EXIST "%path%" (
+    if NOT EXIST "%ProjectPath%" (
         echo.
-        echo Erreur : Veuillez passer un chemin valide
+        echo [31m^>^> Error: Invalid input. Please enter a valid path.[0m
+        goto InputPath
+    )
+)
+
+:: Changement de la valeur de Verification
+set Verification=""
+
+:VerificationPath
+set /p Verification=^> Are you sure ? ^(Y/N^) : 
+echo %Verification%
+if /i "%Verification%" NEQ "y" (
+    if /i "%Verification%" NEQ "n" (
+        goto VerificationPath 
+    ) else (
         goto InputPath
     )
 )
 
 :: Début de création
 echo.
-echo DEBUT DE CREATION
+echo [33mCREATION START[0m
 
 :: Redirection vers le path indiqué
 echo.
-echo Redirection vers le PATH...
-cd %path%
+echo Redirection to the given PATH...
+cd %ProjectPath%
 
 :: Création des répertoires du projet
 echo.
-echo Creation des dossiers...
+echo Creation of the directories...
 mkdir %Name%^
     %Name%\conf^
     %Name%\bin^
@@ -69,14 +90,12 @@ mkdir %Name%^
     %Name%\Project\inc^
     %Name%\Project\res
 
-echo Dossiers cree avec succes.
-
-echo %type%
+echo [32mDirectories created successfully.[0m
 
 if /i "%type%"=="c" (
     :: Création des fichiers .c
     echo.
-    echo Creation des fichiers .c ...
+    echo Creation of the C files...
 
     :: Création des fichiers .c
     echo. > %Name%\Project\src\main.c
@@ -87,7 +106,7 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\src\main.c
     echo int main^(^) { >> %Name%\Project\src\main.c
     echo. >> %Name%\Project\src\main.c
-    echo printf^("Hello world"^); >> %Name%\Project\src\main.c
+    echo    printf^("Hello world"^); >> %Name%\Project\src\main.c
     echo. >> %Name%\Project\src\main.c
     echo } >> %Name%\Project\src\main.c
 
@@ -98,11 +117,11 @@ if /i "%type%"=="c" (
     echo // Functions content >> %Name%\Project\src\Functions.c
 
     :: Message de succès
-    echo Fichiers .c cree avec succes.
+    echo [32mC files created successfully.[0m
 
     :: Création des fichiers .h
     echo.
-    echo Creation des fichiers .h ...
+    echo Creation of the header files.
         
     :: Création des fichiers .h
     echo. > %Name%\Project\inc\Functions.h
@@ -115,11 +134,11 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\inc\Functions.h
     echo #endif >> %Name%\Project\inc\Functions.h
 
-    echo Fichiers .h cree avec succes.
+    echo [32mHeader files created successfully.[0m
 ) else (
     :: Création des fichiers .cpp
     echo.
-    echo Creation des fichiers .cpp ...
+    echo Creation of the CPP files...
 
     :: Création des fichiers .cpp
     echo. > %Name%\Project\src\main.cpp
@@ -130,7 +149,7 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\src\main.cpp
     echo int main^(^) { >> %Name%\Project\src\main.cpp
     echo. >> %Name%\Project\src\main.cpp
-    echo std::cout ^<^< "Hello world" ^<^< std::endl; >> %Name%\Project\src\main.cpp
+    echo    std::cout ^<^< "Hello world" ^<^< std::endl; >> %Name%\Project\src\main.cpp
     echo. >> %Name%\Project\src\main.cpp
     echo } >> %Name%\Project\src\main.cpp
 
@@ -141,11 +160,11 @@ if /i "%type%"=="c" (
     echo // Functions content >> %Name%\Project\src\Functions.cpp
 
     :: Message de succès
-    echo Fichiers .cpp cree avec succes.
+    echo [32mCPP files created successfully.[0m
 
     :: Création des fichiers .hpp
     echo.
-    echo Creation des fichiers .hpp ...
+    echo Creation of the header files...
         
     :: Création des fichiers .hpp
     echo. > %Name%\Project\inc\Functions.hpp
@@ -158,10 +177,10 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\inc\Functions.hpp
     echo #endif >> %Name%\Project\inc\Functions.hpp
 
-    echo Fichiers .hpp cree avec succes.
+    echo [32mHeader files created successfully.[0m
 )
 
 :: Fin de création
 echo.
-echo FIN DE LA CREATION
+echo [33mCREATION FINISHED[0m
 pause
