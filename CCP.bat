@@ -4,12 +4,12 @@
 @echo off
 
 echo =======================================
-echo           _____ _____ _____
-echo          ^/ ____^/ ____^|  __ ^\ 
-echo         ^| ^|   ^| ^|    ^| ^|__^) ^|
-echo         ^| ^|   ^| ^|    ^|  ___^/ 
-echo         ^| ^|___^| ^|____^| ^|     
-echo          ^\_____^\_____^|_^|                          
+echo	       _____ _____ _____
+echo	      ^/ ____^/ ____^|  __ ^\ 
+echo	     ^| ^|   ^| ^|    ^| ^|__^) ^|
+echo	     ^| ^|   ^| ^|    ^|  ___^/ 
+echo	     ^| ^|___^| ^|____^| ^|     
+echo	      ^\_____^\_____^|_^|                          
 echo =======================================
 echo.
 
@@ -128,7 +128,6 @@ if /i "%Want_Build_System%"=="y" (
     set "Build_System="
     echo.
     set /p Build_System=^> Enter the build system ^(Make/CMake^) : 
-
     if not defined Build_System (
         echo.
         echo [31m^>^> Error: Empty input. Please enter 'Make' or 'CMake'.[0m
@@ -138,8 +137,8 @@ if /i "%Want_Build_System%"=="y" (
     if /i "%Build_System%" NEQ "Make" (
         if /i "%Build_System%" NEQ "CMake" (
             echo.
+            :: echo !Build_System!
             echo [31m^>^> Error: Invalid input. Please enter 'Make' or 'CMake'.[0m
-            echo.
             goto BuildSystem
         )
     )
@@ -182,7 +181,7 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\src\main.c
     echo int main^(^) { >> %Name%\Project\src\main.c
     echo. >> %Name%\Project\src\main.c
-    echo    printf^("Hello world"^); >> %Name%\Project\src\main.c
+    echo	printf^("Hello world"^); >> %Name%\Project\src\main.c
     echo. >> %Name%\Project\src\main.c
     echo } >> %Name%\Project\src\main.c
 
@@ -225,7 +224,7 @@ if /i "%type%"=="c" (
     echo. >> %Name%\Project\src\main.cpp
     echo int main^(^) { >> %Name%\Project\src\main.cpp
     echo. >> %Name%\Project\src\main.cpp
-    echo    std::cout ^<^< "Hello world" ^<^< std::endl; >> %Name%\Project\src\main.cpp
+    echo	std::cout ^<^< "Hello world" ^<^< std::endl; >> %Name%\Project\src\main.cpp
     echo. >> %Name%\Project\src\main.cpp
     echo } >> %Name%\Project\src\main.cpp
 
@@ -263,55 +262,55 @@ if /i "%Want_Build_System%"=="y" (
         echo Creation of the MakeFile...
         
         :: MakeFile content depending of the langage used
-        echo # Variables > %Name%\MakeFile
+        echo # Variables> %Name%\MakeFile
 
         if /i "%type%"=="cpp" (
-            echo CXX = g++ >> %Name%\MakeFile
+            echo CXX = g++>> %Name%\MakeFile
         ) else (
-            echo CXX = gcc >> %Name%\MakeFile
+            echo CXX = gcc>> %Name%\MakeFile
         )
         
-        echo CXXFLAGS = -Wall -Wextra -I%Name%\Project\inc >> %Name%\MakeFile
+        echo CXXFLAGS = -Wall -Wextra -I%Name%\Project\inc>> %Name%\MakeFile
         
-        echo. >> %Name%\MakeFile
-        echo # Directories >> %Name%\MakeFile
-        echo SRC_DIR = Project\src >> %Name%\MakeFile
-        echo INC_DIR = Project\inc >> %Name%\MakeFile
-        echo BUILD_DIR = build >> %Name%\MakeFile
-        echo BIN_DIR = bin >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Directories>> %Name%\MakeFile
+        echo SRC_DIR = Project\src>> %Name%\MakeFile
+        echo INC_DIR = Project\inc>> %Name%\MakeFile
+        echo BUILD_DIR = build>> %Name%\MakeFile
+        echo BIN_DIR = bin>> %Name%\MakeFile
         
-        echo. >> %Name%\MakeFile
-        echo # Executable name >> %Name%\MakeFile
-        echo TARGET = $^(BIN_DIR^)/main.exe >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Executable name>> %Name%\MakeFile
+        echo TARGET = $^(BIN_DIR^)/main.exe>> %Name%\MakeFile
         
-        echo. >> %Name%\MakeFile
-        echo # Source files and objects >> %Name%\MakeFile
-        echo SOURCES = $^(wildcard $^(SRC_DIR^)/*.cpp^) >> %Name%\MakeFile
-        echo OBJECTS = $^(patsubst $^(SRC_DIR^)/%%.cpp, $^(BUILD_DIR^)/%%.o, $^(SOURCES^)^) >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Source files and objects>> %Name%\MakeFile
+        echo SOURCES = $^(wildcard $^(SRC_DIR^)/*.cpp^)>> %Name%\MakeFile
+        echo OBJECTS = $^(patsubst $^(SRC_DIR^)/%%.cpp, $^(BUILD_DIR^)/%%.o, $^(SOURCES^)^)>> %Name%\MakeFile
         
-        echo. >> %Name%\MakeFile
-        echo all: $^(TARGET^) >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo all: $^(TARGET^)>> %Name%\MakeFile
         
-        echo. >> %Name%\MakeFile
-        echo # Link objects and create executables >> %Name%\MakeFile
-        echo $^(TARGET^): $^(OBJECTS^) >> %Name%\MakeFile
-        echo    @if not exist $^(BIN_DIR^) mkdir $^(BIN_DIR^) >> %Name%\MakeFile
-        echo    $^(CXX^) $^(OBJECTS^) -o $@ >> %Name%\MakeFile
-        echo    @echo Compilation completed : $@ >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Link objects and create executables>> %Name%\MakeFile
+        echo $^(TARGET^): $^(OBJECTS^)>> %Name%\MakeFile
+        echo 	@if not exist $^(BIN_DIR^) mkdir $^(BIN_DIR^)>> %Name%\MakeFile
+        echo 	$^(CXX^) $^(OBJECTS^) -o $@>> %Name%\MakeFile
+        echo 	@echo Linking complete : $@>> %Name%\MakeFile
 
-        echo. >> %Name%\MakeFile
-        echo # Compile .cpp to .o >> %Name%\MakeFile
-        echo $^(BUILD_DIR^)/%%.o: $^(SRC_DIR^)/%%.cpp >> %Name%\MakeFile
-        echo    @if not exist $^(BUILD_DIR^) mkdir $^(BUILD_DIR^) >> %Name%\MakeFile
-        echo    $^(CXX^) $^(CXXFLAGS^) -c $^< -o $@ >> %Name%\MakeFile
-        echo    @echo Compilation : $^< -^> $@ >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Compile .cpp to .o>> %Name%\MakeFile
+        echo $^(BUILD_DIR^)/%%.o: $^(SRC_DIR^)/%%.cpp>> %Name%\MakeFile
+        echo 	@if not exist $^(BUILD_DIR^) mkdir $^(BUILD_DIR^)>> %Name%\MakeFile
+        echo 	$^(CXX^) $^(CXXFLAGS^) -c $^< -o $@>> %Name%\MakeFile
+        echo 	@echo Compilation : $@>> %Name%\MakeFile
 
-        echo. >> %Name%\MakeFile
-        echo # Clean .o files >> %Name%\MakeFile
-        echo clean: >> %Name%\MakeFile
-        echo    @if exist build\*.o del /Q build\*.o >> %Name%\MakeFile
-        echo    @if exist bin\*.exe del /Q bin\*.exe >> %Name%\MakeFile
-        echo    @echo Cleaning completed >> %Name%\MakeFile
+        echo.>> %Name%\MakeFile
+        echo # Clean .o files>> %Name%\MakeFile
+        echo clean:>> %Name%\MakeFile
+        echo 	@if exist build\*.o del /Q build\*.o>> %Name%\MakeFile
+        echo 	@if exist bin\*.exe del /Q bin\*.exe>> %Name%\MakeFile
+        echo 	@echo Cleaning completed>> %Name%\MakeFile
 
     ) else (
         :: CMake content depending of the langage used
